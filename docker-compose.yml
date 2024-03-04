@@ -1,0 +1,29 @@
+services:
+  postgres:
+    container_name: postgres-build-vp
+    image: postgres
+    environment:
+      POSTGRES_USER: umalak
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mytest
+    ports:
+      - "1235:5432"
+    volumes:
+      - postgres-vol:/var/lib/postgresql/data
+    networks:
+      - spring-boot-network-comp
+  spring-boot-app:
+    container_name: spring-boot-test
+    image: spring-boot/testintellij
+    ports:
+      - "8088:8080"
+    networks:
+      - spring-boot-network-comp
+    depends_on:
+      - postgres
+volumes:
+  postgres-vol:
+
+networks:
+  spring-boot-network-comp:
+    driver: bridge
